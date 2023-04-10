@@ -1,0 +1,2 @@
+from .fighter_scraper import scrape_fighter_data
+from .wiki_event_scraper import scrape_upcoming_events

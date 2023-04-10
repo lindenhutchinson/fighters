@@ -1,0 +1,105 @@
+{% extends "base.html" %} {% block content %}
+<div class="container">
+	<h1>{{ event.name }}</h1>
+	<h2>{{ event.date }}</h2>
+	<h3>Main Card</h3>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Fighter 1</th>
+				<th>Weight Class</th>
+				<th>Fighter 2</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for fight in event.main %}
+			<tr>
+				<td>
+					<a href="#" class="fighter-link" data-fighter="{{ fight.fighter_1 }}"
+						>{{ fight.fighter_1 }}</a
+					>
+				</td>
+				<td>{{ fight.weight_class }}</td>
+				<td>
+					<a href="#" class="fighter-link" data-fighter="{{ fight.fighter_2 }}"
+						>{{ fight.fighter_2 }}</a
+					>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<h3>Preliminary Card</h3>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Fighter 1</th>
+				<th>Weight Class</th>
+				<th>Fighter 2</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for fight in event.prelim %}
+			<tr>
+				<td>
+					<a href="#" class="fighter-link" data-fighter="{{ fight.fighter_1 }}"
+						>{{ fight.fighter_1 }}</a
+					>
+				</td>
+				<td>{{ fight.weight_class }}</td>
+				<td>
+					<a href="#" class="fighter-link" data-fighter="{{ fight.fighter_2 }}"
+						>{{ fight.fighter_2 }}</a
+					>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% include 'fighter_modal.html' %}
+<script>
+	$(document).ready(function () {
+		var modalBody = $('#fighterModal .modal-body');
+		const oldBody = modalBody.html();
+		$(".fighter-link").on("click", function (event) {
+			event.preventDefault();
+			var fighter = $(this).data("fighter");
+			var modalBody = $('#fighterModal .modal-body');
+			$('#fighterModalLabel').text('Loading Fighter Details');
+			modalBody.html('<div class="text-center"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>');
+			$('#fighterModal').modal('show');
+
+			$.ajax({
+				url: '/fighter/' + fighter,
+				type: 'GET',
+				success: function(data) {
+					if(!data) {
+						$('#fighterModalLabel').text(fighter);
+						modalBody.html("Sorry, couldn't find any details on that fighter");
+						return;
+					}
+					modalBody.html(oldBody);
+					$('#fighterModalLabel').text(data.name);
+					$('#fighterName').text(data.name);
+					$('#fighterRecord').text(data.record);
+					$('#fighterHeight').text(data.height);
+					$('#fighterWeight').text(data.weight);
+					$('#fighterReach').text(data.reach);
+					$('#fighterDob').text(data.dob);
+					$('#fighterFights').empty();
+					for (var i = 0; i < data.fights.length; i++) {
+						var fight = data.fights[i];
+						var html = '<li>' + fight.date + ': ' + fight.opponent + ' (' + fight.result + ')</li>';
+						$('#fighterFights').append(html);
+					}
+				},
+				error: function(xhr, status, error) {
+					alert('An error occurred while retrieving fighter data: ' + error);
+				}
+			});
+		});
+	});
+</script>
+
+{% endblock %}
