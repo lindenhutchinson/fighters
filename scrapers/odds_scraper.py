@@ -60,7 +60,7 @@ def scrape_odds_data(event_name, fighters):
     fighters_odds = {}
     bad_fighter_ctr = 0
     rows = tbody.find_all('tr', class_=lambda c: not 'pr' in c if c else True)
-    for i, row in enumerate(rows):  
+    for row in rows:  
         row_fighter = row.find('th').get_text()
         if row_fighter not in fighters:
             fighter = find_fighter(row_fighter, fighters)
@@ -81,7 +81,7 @@ def scrape_odds_data(event_name, fighters):
         else:
             bad_fighter_ctr+=1
             
-    # couldnt match more than 10 fighters, we're probably looking at the wrong event  
+    # couldnt match more than half the fighters, we're probably looking at the wrong event  
     if bad_fighter_ctr > (len(fighters) // 2):
         print(bad_fighter_ctr)
         print('Too many mismatches fighters, no odds')
