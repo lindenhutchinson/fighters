@@ -2,7 +2,6 @@ from flask import Flask
 import logging
 from logging import Formatter, FileHandler
 from cache_manager import cache
-
 # extensions
 from routes import routes
 

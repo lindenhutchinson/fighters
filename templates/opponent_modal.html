@@ -1,15 +1,16 @@
-<!-- Fighter Modal -->
+<!-- Opponent Modal -->
 <div
 	class="modal fade"
-	id="fighterModal"
+	id="opponentModal"
 	tabindex="-1"
-	aria-labelledby="fighterModalLabel"
+	aria-labelledby="opponentModalLabel"
 	aria-hidden="true"
 >
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title fighter-header" id="fighterModalLabel"></h5>
+				
+				<h5 class="modal-title fighter-header" id="opponentModalLabel"></h5>
 				<button
 					type="button"
 					class="btn-close"
@@ -22,34 +23,34 @@
 					<tbody>
 						<tr>
 							<td>Record:</td>
-							<td id="fighterModalRecord"></td>
+							<td id="opponentModalRecord"></td>
 						</tr>
 						<tr>
 							<td>Height:</td>
-							<td id="fighterModalHeight"></td>
+							<td id="opponentModalHeight"></td>
 						</tr>
 						<tr>
 							<td>Weight:</td>
-							<td id="fighterModalWeight"></td>
+							<td id="opponentModalWeight"></td>
 						</tr>
 						<tr>
 							<td>Reach:</td>
-							<td id="fighterModalReach"></td>
+							<td id="opponentModalReach"></td>
 						</tr>
 						<tr>
 							<td>Date of Birth:</td>
-							<td id="fighterModalDob"></td>
+							<td id="opponentModalDob"></td>
 						</tr>
 						<tr>
 							<td>Recent Fights:</td>
 							<td>
-								<ul id="fighterModalFights"></ul>
+								<ul id="opponentModalFights"></ul>
 							</td>
 						</tr>
-						<tr id="fighterModalOddsRow">
+						<tr id="opponentModalOddsRow">
 							<td>Odds:</td>
 							<td>
-								<ul id="fighterModalOdds"></ul>
+								<ul id="opponentModalOdds"></ul>
 							</td>
 						</tr>
 					</tbody>
@@ -59,10 +60,9 @@
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
 					Close
 				</button>
-				<button type="button" class="btn btn-primary" id="showOpponentBtn">
+                <button type="button" class="btn btn-primary" id="showFighterBtn" hidden>
 					Show Opponent
 				</button>
-				
 			</div>
 		</div>
 	</div>

@@ -1,16 +1,12 @@
 from bs4 import BeautifulSoup
 import re
 import json
-from .utils import get_soup, clean_string
-from difflib import SequenceMatcher
+from .utils import clean_name, get_soup, clean_string, names_are_similar
+
 import unidecode
 SEARCH_URL = "http://ufcstats.com/statistics/fighters/search"
 
-NAME_THRESHOLD = 0.75
 
-def names_are_similar(name1, name2):
-    ratio = SequenceMatcher(None, name1, name2).ratio()
-    return ratio >= NAME_THRESHOLD
 
 def get_fighter_detail(soup: BeautifulSoup, header_name: str):
     """
@@ -159,14 +155,14 @@ def get_fighter_url(fighter_name):
 
     if len(result_rows) > 3:
         
-        clean_fighter_name = unidecode.unidecode(fighter_name.lower().replace('.','')).split(' ')
+        clean_fighter_name = clean_name(fighter_name).split(' ')
         clean_first = clean_fighter_name[0]
         clean_last = clean_fighter_name[-1]
         # skip the first two row as they are not important
         for row in result_rows[2:]:
             cells = row.find_all("td")
-            first = clean_string(cells[0].get_text())
-            last = clean_string(cells[1].get_text())
+            first = clean_string(cells[0].get_text()).lower()
+            last = clean_string(cells[1].get_text()).lower()
             url = cells[0].find("a").attrs["href"]
             if names_are_similar(first, clean_first) and (names_are_similar(last, clean_last) or names_are_similar(last, last_name) or names_are_similar(last, combined_last_name)):
                 return url
@@ -195,6 +191,6 @@ def scrape_fighter_data(fighter_name, retrieve_num_fights=5):
         return get_fighter_data(fighter_url, retrieve_num_fights)
 
 if __name__ == "__main__":
-    data = scrape_fighter_data("Marcos Rogério de Lima")
+    data = scrape_fighter_data("Max Holloway")
 
     print(json.dumps(data, indent=4, sort_keys=True))

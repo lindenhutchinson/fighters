@@ -2,9 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import json
-
+from difflib import SequenceMatcher
 import shortuuid
-
+import unidecode
 def get_soup(url: str, params: dict = {}):
     """
         Get BeautifulSoup object from a given URL and parameters.
@@ -42,3 +42,12 @@ def json_pprint(json_obj):
     
 def get_short_uuid():
     return shortuuid.uuid()
+
+NAME_THRESHOLD = 0.75
+
+def names_are_similar(name1, name2, threshold=NAME_THRESHOLD):
+    ratio = SequenceMatcher(None, name1, name2).ratio()
+    return ratio >= threshold
+
+def clean_name(name):
+    return unidecode.unidecode(name.lower().replace('.','').replace('(c)', '').strip())

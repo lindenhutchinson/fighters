@@ -8,8 +8,8 @@ def home():
 
 def event(id):
     event = get_event_by_id(id)
-    return render_template("event.html", event=event)
+    return render_template("event.html", event=event, id=id)
 
-def fighter(fighter_name):
-    fighter = get_fighter_data(fighter_name)
-    return make_response(jsonify(fighter))
+def fighter(event_id, fighter_name):
+    fighter, odds = get_fighter_data(fighter_name, event_id)
+    return make_response(jsonify({'fighter':fighter, 'odds':odds}))

@@ -1,14 +1,15 @@
-from .utils import get_soup, clean_string, json_pprint, get_short_uuid
+from .utils import get_soup, clean_string, json_pprint, get_short_uuid, clean_name
 
 MAIN_URL = "https://en.wikipedia.org"
 
 def get_event_fighters(event_url):
     soup = get_soup(event_url)
-    if not soup.find(id="Fight_card"):
+    if not soup.find(id="Fight_card") or soup.find(id="Results"):
         print("No fight card found for fight")
         return False
 
     event_data = {"main": [], "prelim": []}
+    fighters = []
     on_main_card = True
     table = soup.find("table", class_="toccolours")
     rows = table.find_all("tr")
@@ -25,6 +26,7 @@ def get_event_fighters(event_url):
             weight_class = clean_string(cells[0].get_text())
             fighter_1 = clean_string(cells[1].get_text())
             fighter_2 = clean_string(cells[3].get_text())
+            fighters.extend((clean_name(fighter_1), clean_name(fighter_2)))
 
             event_data["main" if on_main_card else "prelim"].append(
                 {
@@ -33,6 +35,8 @@ def get_event_fighters(event_url):
                     "fighter_2": fighter_2,
                 }
             )
+            
+        event_data['fighters'] = fighters
 
     return event_data
 

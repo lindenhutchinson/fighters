@@ -15,4 +15,4 @@ def routes(app):
 
     app.add_url_rule('/', view_func=home)
     app.add_url_rule('/event/<string:id>', view_func=event)
-    app.add_url_rule('/fighter/<string:fighter_name>', view_func=fighter)
+    app.add_url_rule('/fighter/<string:event_id>/<string:fighter_name>', view_func=fighter)

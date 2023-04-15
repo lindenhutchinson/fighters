@@ -2,19 +2,18 @@
 
 <!-- Main content -->
 <div class="container my-5">
-	<h1>Upcoming UFC Events</h1>
-	<hr />
-	{% for event in events %}
-	<div class="card my-3">
-		<div class="card-body">
-			<h5 class="card-title">{{ event.name }}</h5>
-			<p class="card-text">Date: {{ event.date }}</p>
-			<a href="{{ url_for('event', id=event.id) }}" class="btn btn-primary"
-				>View Fighters</a
-			>
-		</div>
-	</div>
-	{% endfor %}
+    <h1 class="mb-4">Upcoming UFC Events</h1>
+    {% for event in events %}
+    <div class="card my-3">
+        <div class="card-body">
+            <h5 class="card-title">{{ event.name }}</h5>
+            <p class="card-text">Date: {{ event.date }}</p>
+            <a href="{{ url_for('event', id=event.id) }}" class="btn btn-primary">
+                View Fighters
+            </a>
+        </div>
+    </div>
+    {% endfor %}
 </div>
 
 {% endblock %}
